@@ -2,9 +2,8 @@ import Image from "next/image";
 import Header from "./_components/Header";
 import ImageSlider from "./_components/image-slider";
 import styles from "./page.module.css";
-import { cache } from "react";
 
-export const fetchSliderData = cache(async () => {
+async function fetchSliderData() {
   try {
     const response = await fetch('https://dummyjson.com/c/58dd-d1cb-44a7-9e89', {
       next: { revalidate: 3600 },
@@ -21,7 +20,7 @@ export const fetchSliderData = cache(async () => {
     console.error('Error fetching slider data:', error);
     return { data: [] };
   }
-});
+}
 
 export default async function Home() {
   const sliderData = await fetchSliderData();
