@@ -9,7 +9,7 @@ interface ItemProps {
 
 function Item({ product }: ItemProps) {
   return (
-    <Link href={`/product/${product.id}`} className={styles.item}>
+    <Link href="/product" className={styles.item}>
       <div className={styles.imageContainer}>
         <Image
           src={product.thumbnail_image || "/placeholder.svg"}
