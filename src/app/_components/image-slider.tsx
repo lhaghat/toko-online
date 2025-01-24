@@ -6,22 +6,26 @@ import Item from "@/app/_components/item"
 interface Slide {
     id: string;
     thumbnail_image: string;
-    name: String;
+    name: string;
   }
 
 const ImageSlider = ({ data }: { data: Slide[] }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
-  const sliderRef = useRef(null);
+  const sliderRef = useRef<HTMLDivElement>(null);
+
 
    // Start drag or touch
-  const handleStart = (e) => {
-    setIsDragging(true);
-    const startPos = e.type === 'touchstart' ? e.touches[0].pageX : e.pageX;
-    setStartX(startPos - sliderRef.current.offsetLeft);
-    setScrollLeft(sliderRef.current.scrollLeft);
+  const handleStart = (e: MouseEvent | TouchEvent) => {
+    if (sliderRef.current) {
+      setIsDragging(true);
+      const startPos = e.type === 'touchstart' 
+        ? (e as TouchEvent).touches[0].pageX 
+        : (e as MouseEvent).pageX;
+      setStartX(startPos - sliderRef.current.offsetLeft);
+      setScrollLeft(sliderRef.current.scrollLeft);
+    }
   };
 
   // Stop drag or touch
@@ -30,12 +34,18 @@ const ImageSlider = ({ data }: { data: Slide[] }) => {
   };
 
 // Move drag or touch
-const handleMove = (e) => {
-    if (!isDragging) return;
+  const handleMove = (e: MouseEvent | TouchEvent) => {
+    if (!isDragging || !sliderRef.current) return;
+    
     e.preventDefault();
-    const movePos = e.type === 'touchmove' ? e.touches[0].pageX : e.pageX;
+    
+    const movePos = e.type === 'touchmove' 
+      ? (e as TouchEvent).touches[0].pageX 
+      : (e as MouseEvent).pageX;
+    
     const x = movePos - sliderRef.current.offsetLeft;
-    const walk = (x - startX) * 2; // Adjust the multiplier for sensitivity
+    const walk = (x - startX) * 2;
+    
     sliderRef.current.scrollLeft = scrollLeft - walk;
   };
 
