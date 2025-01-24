@@ -35,6 +35,13 @@ a {
   text-decoration: none;
 }
 
+.slider-container {
+  display: flex;
+  transition: transform 0.3s ease-in-out;
+  gap: 20px;
+  padding: 12px 0;
+}
+
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
